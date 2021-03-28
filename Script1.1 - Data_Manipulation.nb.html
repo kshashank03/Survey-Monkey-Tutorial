@@ -251,11 +251,40 @@ summary {
 <p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJJ20gdXNpbmcgcmVhZHhsIGJlY2F1c2UgaXQgaGFzIG5vIGV4dGVybmFsIGRlcGVuZGVuY2llc1xuXG5wd2QgPC0gZ2V0d2QoKSAjIHNldHMgdGhlIGN1cnJlbnQgd29ya2luZyBkaXJlY3RvcnlcbnB3ZFxuYGBgIn0= -->
+<pre class="r"><code># I&#39;m using readxl because it has no external dependencies
+
+pwd &lt;- getwd() # sets the current working directory
+pwd</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiL1VzZXJzL2c0MnYvRG9jdW1lbnRzL1BlcnNvbmFsL1N1cnZleSBNb25rZXkgVHV0b3JpYWxcIlxuIn0= -->
+<pre><code>[1] &quot;/Users/g42v/Documents/Personal/Survey Monkey Tutorial&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsZXBhdGggPC0gcGFzdGUocHdkLCBcIi9EYXRhIC0gU3VydmV5IE1vbmtleSBPdXRwdXQgRWRpdGVkLnhsc3hcIiwgc2VwPVwiXCIpXG5maWxlcGF0aFxuYGBgIn0= -->
+<pre class="r"><code>filepath &lt;- paste(pwd, &quot;/Data - Survey Monkey Output Edited.xlsx&quot;, sep=&quot;&quot;)
+filepath</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiL1VzZXJzL2c0MnYvRG9jdW1lbnRzL1BlcnNvbmFsL1N1cnZleSBNb25rZXkgVHV0b3JpYWwvRGF0YSAtIFN1cnZleSBNb25rZXkgT3V0cHV0IEVkaXRlZC54bHN4XCJcbiJ9 -->
+<pre><code>[1] &quot;/Users/g42v/Documents/Personal/Survey Monkey Tutorial/Data - Survey Monkey Output Edited.xlsx&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YV9pbXBvcnQgPC0gcmVhZF9leGNlbChwd2QgKyBcIi9EYXRhIC0gU3VydmV5IE1vbmtleSBPdXRwdXQgRWRpdGVkLnhsc3hcIiwgc2hlZXQgPSBcIkVkaXRlZF9EYXRhXCIpXG5gYGAifQ== -->
+<pre class="r"><code>data_import &lt;- read_excel(pwd + &quot;/Data - Survey Monkey Output Edited.xlsx&quot;, sheet = &quot;Edited_Data&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcHdkICsgXCIvRGF0YSAtIFN1cnZleSBNb25rZXkgT3V0cHV0IEVkaXRlZC54bHN4XCIgOiBcbiAgbm9uLW51bWVyaWMgYXJndW1lbnQgdG8gYmluYXJ5IG9wZXJhdG9yXG4ifQ== -->
+<pre><code>Error in pwd + &quot;/Data - Survey Monkey Output Edited.xlsx&quot; : 
+  non-numeric argument to binary operator</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KcGxvdChjYXJzKQpgYGAKCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDbWQrT3B0aW9uK0kqLgoKV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDbWQrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4gCgpUaGUgcHJldmlldyBzaG93cyB5b3UgYSByZW5kZXJlZCBIVE1MIGNvcHkgb2YgdGhlIGNvbnRlbnRzIG9mIHRoZSBlZGl0b3IuIENvbnNlcXVlbnRseSwgdW5saWtlICpLbml0KiwgKlByZXZpZXcqIGRvZXMgbm90IHJ1biBhbnkgUiBjb2RlIGNodW5rcy4gSW5zdGVhZCwgdGhlIG91dHB1dCBvZiB0aGUgY2h1bmsgd2hlbiBpdCB3YXMgbGFzdCBydW4gaW4gdGhlIGVkaXRvciBpcyBkaXNwbGF5ZWQuCgpgYGB7cn0KCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KcGxvdChjYXJzKQpgYGAKCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDbWQrT3B0aW9uK0kqLgoKV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDbWQrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4gCgpUaGUgcHJldmlldyBzaG93cyB5b3UgYSByZW5kZXJlZCBIVE1MIGNvcHkgb2YgdGhlIGNvbnRlbnRzIG9mIHRoZSBlZGl0b3IuIENvbnNlcXVlbnRseSwgdW5saWtlICpLbml0KiwgKlByZXZpZXcqIGRvZXMgbm90IHJ1biBhbnkgUiBjb2RlIGNodW5rcy4gSW5zdGVhZCwgdGhlIG91dHB1dCBvZiB0aGUgY2h1bmsgd2hlbiBpdCB3YXMgbGFzdCBydW4gaW4gdGhlIGVkaXRvciBpcyBkaXNwbGF5ZWQuCgpgYGB7cn0KIyBJJ20gdXNpbmcgcmVhZHhsIGJlY2F1c2UgaXQgaGFzIG5vIGV4dGVybmFsIGRlcGVuZGVuY2llcwoKcHdkIDwtIGdldHdkKCkgIyBzZXRzIHRoZSBjdXJyZW50IHdvcmtpbmcgZGlyZWN0b3J5CnB3ZApgYGAKYGBge3J9CmZpbGVwYXRoIDwtIHBhc3RlKHB3ZCwgIi9EYXRhIC0gU3VydmV5IE1vbmtleSBPdXRwdXQgRWRpdGVkLnhsc3giLCBzZXA9IiIpICMgTWFrZSBzdXJlIHlvdSBmaXggdGhpcyBzZXBhcmF0b3IKZmlsZXBhdGgKYGBgCgpgYGB7cn0KZGF0YV9pbXBvcnQgPC0gcmVhZF9leGNlbChwd2QgKyAiL0RhdGEgLSBTdXJ2ZXkgTW9ua2V5IE91dHB1dCBFZGl0ZWQueGxzeCIsIHNoZWV0ID0gIkVkaXRlZF9EYXRhIikKZGF0YV9pbXBvcnQKYGBgCgo=</div>
 
 
 

@@ -18,6 +18,18 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 ```{r}
+# I'm using readxl because it has no external dependencies
 
+pwd <- getwd() # sets the current working directory
+pwd
+```
+```{r}
+filepath <- paste(pwd, "/Data - Survey Monkey Output Edited.xlsx", sep="") # Make sure you fix this separator
+filepath
+```
+
+```{r}
+data_import <- read_excel(pwd + "/Data - Survey Monkey Output Edited.xlsx", sheet = "Edited_Data")
+data_import
 ```
 
