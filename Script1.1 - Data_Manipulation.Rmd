@@ -3,33 +3,73 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
-
-```{r}
-plot(cars)
-```
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
-
 ```{r}
 # I'm using readxl because it has no external dependencies
+library(readxl)
+library(reshape2)
 
 pwd <- getwd() # sets the current working directory
 pwd
 ```
 ```{r}
-filepath <- paste(pwd, "/Data - Survey Monkey Output Edited.xlsx", sep="") # Make sure you fix this separator
+filepath <- paste(pwd, "/Data - Survey Monkey Output Edited.xlsx", sep="") # Make sure you fix this separator, it's a space by default
 filepath
 ```
 
 ```{r}
-data_import <- read_excel(pwd + "/Data - Survey Monkey Output Edited.xlsx", sheet = "Edited_Data")
+data_import <- read_excel(filepath , sheet = "Edited_Data")
 data_import
+```
+```{r}
+dataset_modified <- data.frame(data_import) # Make a copy of the dataframe
+
+dataset_modified # R seems to add "." to my column names
+```
+```{r}
+columns_to_drop <- c('Start.Date', 'End.Date', 'Email.Address', 'First.Name', 'Last.Name', 'Custom.Data.1')
+columns_to_drop
+```
+```{r}
+dataset_modified <- dataset_modified[ , ! names(dataset_modified) %in% columns_to_drop] 
+dataset_modified # More methods: https://www.youtube.com/watch?v=yhdxuFNvHxU
+```
+
+```{r}
+id_vars <- colnames(dataset_modified)[1:8] # Install the reshape2 package, R uses 1 based indexing
+id_vars
+```
+
+```{r}
+dataset_melted <- melt(dataset_modified, id=id_vars, variable.name = "Question.+.Subquestion", value.name = "Answer")
+dataset_melted
+```
+```{r}
+questions_import <- read_excel(filepath, sheet="Question_R")
+questions_import
+```
+```{r}
+questions <- data.frame(questions_import)
+questions
+```
+```{r}
+questions <- questions[ , ! names(questions) %in% c("Raw.Question", "Raw.Subquestion", "Subquestion")]
+questions
+```
+
+
+```{r}
+
+dataset_merged <- merge(x=dataset_melted, y=questions, by.x ="Question.+.Subquestion", by.y = "Question...Subquestion", all.x=TRUE) # https://stackoverflow.com/questions/1299871/how-to-join-merge-data-frames-inner-outer-left-right
+
+dataset_merged
+```
+```{r}
+respondents <- dataset_merged[! is.na(dataset_merged$Answer),]
+
+aggregate(Respondent.ID~Question, respondents, unique(Respondent.ID))
+```
+
+```{r}
+respondents[c("Question", "Answer")]
 ```
 
