@@ -7,6 +7,9 @@ output: html_notebook
 # I'm using readxl because it has no external dependencies
 library(readxl)
 library(reshape2)
+#library(plyr) Obsolete package
+library(data.table)
+library(writexl)
 
 pwd <- getwd() # sets the current working directory
 pwd
@@ -65,11 +68,61 @@ dataset_merged
 ```
 ```{r}
 respondents <- dataset_merged[! is.na(dataset_merged$Answer),]
-
-aggregate(Respondent.ID~Question, respondents, unique(Respondent.ID))
+respondents
 ```
 
 ```{r}
-respondents[c("Question", "Answer")]
+DT <- data.table(respondents)
+respondents <- DT[, .(number_of_distinct_answers = length(unique(Respondent.ID))), by = Question]
+
+respondents
+```
+
+```{r}
+dataset_merged_two <- merge(x=dataset_merged, y=respondents, by="Question", all.x = TRUE)
+dataset_merged_two
+```
+
+```{r}
+same_answer <- dataset_merged[! is.na(dataset_merged$Answer),]
+
+DT_one <- data.table(same_answer)
+same_answer <- DT_one[, .(number_of_distinct_answers_two = length(unique(Respondent.ID))), by = c('Question.+.Subquestion', 'Answer')]
+same_answer
+```
+
+```{r}
+dataset_merged_three <- merge(x=dataset_merged_two, y=same_answer, by=c('Question.+.Subquestion', 'Answer'), all.x = TRUE)
+dataset_merged_three
+```
+
+```{r}
+colnames(dataset_merged_three)
+```
+
+```{r}
+names(dataset_merged_three)[names(dataset_merged_three) == "Identify.which.division.you.work.in....Response"] <- "Division"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "Identify.which.division.you.work.in....Other..please.specify."] <- "Division Other"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "Which.of.the.following.best.describes.your.position.level....Response"] <- "Position"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "Which.generation.are.you.apart.of....Response"] <- "Generation"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "Please.select.the.gender.in.which.you.identify....Response"] <- "Gender"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "Which.duration.range.best.aligns.with.your.tenure.at.your.company....Response"] <- "Tenure"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "Which.of.the.following.best.describes.your.employment.type....Response"] <- "EmploymentType"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "number_of_distinct_answers"] <- "Respondents"
+
+names(dataset_merged_three)[names(dataset_merged_three) == "number_of_distinct_answers_two"] <- "SameAnswer"
+
+dataset_merged_three
+```
+
+```{r}
+write_xlsx(dataset_merged_three, paste(pwd , "/Final_Output_R.xlsx", sep=""))
 ```
 
